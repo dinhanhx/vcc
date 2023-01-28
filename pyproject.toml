@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "vcc"
+version = "0.1.0"
+description = "Vietnamese Conceptual Caption build tools"
+authors = ["Dinh Anh <dinhanhx@gmail.com>"]
+license = "mit"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+urllib3 = "^1.26.14"
+black = "^22.12.0"
+flake8 = "^6.0.0"
+selenium = "^4.8.0"
+webdriver-manager = "^3.8.5"
+dataclass-wizard = "^0.22.2"
+beautifulsoup4 = "^4.11.1"
+lxml = "^4.9.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
