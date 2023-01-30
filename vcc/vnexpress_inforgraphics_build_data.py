@@ -66,5 +66,22 @@ def build_data():
         json.dump({'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False)
 
 
-make_article_list()
-build_data()
+def clean_data():
+    with open(DATA_DIR.joinpath('image_caption_list.json'), 'r', encoding='utf-8') as fp:
+        image_caption_list = json.load(fp)['image_caption_list']
+
+    http = urllib3.PoolManager()
+    for image_caption in image_caption_list:
+        if "</span>" in image_caption['caption']:
+            response = http.request('GET', image_caption['article_url'])
+            soup = BeautifulSoup(response.data, 'lxml')
+            caption = soup.find('div', class_="width-detail-photo").find('p', class_="description").contents[1]
+            image_caption['caption'] = caption
+
+    with open(DATA_DIR.joinpath('image_caption_list.json'), 'w', encoding='utf-8') as fp:
+        json.dump({'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False)
+
+
+# make_article_list()
+# build_data()
+clean_data()
