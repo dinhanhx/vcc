@@ -3,11 +3,13 @@ import random
 import time
 from pathlib import Path
 
+import click
 import urllib3
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 from vcc.image_caption import ImageCaption
+from vcc.ordered_commands import OrderedCommands
 
 
 DATA_DIR = Path(r"data/vnexpress/inforgraphics")
@@ -15,6 +17,14 @@ START_INDEX = 1
 END_INDEX = 18
 
 
+@click.group(cls=OrderedCommands)
+def cli():
+    """Welcome to vnexpress inforgraphics crawler, please run commands in the order that you see in this help text
+    """
+    pass
+
+
+@cli.command()
 def make_article_list():
     article_list = []
     http = urllib3.PoolManager()
@@ -41,6 +51,7 @@ def make_article_list():
         json.dump({'article_list': article_list}, fp, indent=4, ensure_ascii=False)
 
 
+@cli.command()
 def build_data():
     with open(DATA_DIR.joinpath('article_list.json'), 'r', encoding='utf-8') as fp:
         article_list = json.load(fp)['article_list']
@@ -66,6 +77,7 @@ def build_data():
         json.dump({'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False)
 
 
+@cli.command()
 def clean_data():
     with open(DATA_DIR.joinpath('image_caption_list.json'), 'r', encoding='utf-8') as fp:
         image_caption_list = json.load(fp)['image_caption_list']
@@ -82,6 +94,5 @@ def clean_data():
         json.dump({'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False)
 
 
-make_article_list()
-build_data()
-clean_data()
+if __name__ == '__main__':
+    cli()

@@ -3,11 +3,13 @@ import random
 import time
 from pathlib import Path
 
+import click
 import urllib3
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 from vcc.image_caption import ImageCaption
+from vcc.ordered_commands import OrderedCommands
 
 HTML_DIR = Path(r"data/vnanet/vietnamese/phong-su-anh")
 DATA_DIR = Path(r"data/vnanet/vietnamese/")
@@ -15,6 +17,14 @@ START_INDEX = 1
 END_INDEX = 40
 
 
+@click.group(cls=OrderedCommands)
+def cli():
+    """Welcome to vnanet crawler, please run commands in the order that you see in this help text
+    """
+    pass
+
+
+@cli.command()
 def make_article_list():
     article_list = []
     for i in range(START_INDEX, END_INDEX+1):
@@ -29,6 +39,7 @@ def make_article_list():
         json.dump({'article_list': article_list}, fp, indent=4, ensure_ascii=False)
 
 
+@cli.command()
 def build_data():
     with open(DATA_DIR.joinpath('article_list.json'), 'r', encoding='utf-8') as fp:
         article_list = json.load(fp)['article_list']
@@ -53,5 +64,5 @@ def build_data():
         json.dump({'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False)
 
 
-make_article_list()
-build_data()
+if __name__ == '__main__':
+    cli()
