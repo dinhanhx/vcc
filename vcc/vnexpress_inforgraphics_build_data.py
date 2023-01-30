@@ -82,6 +82,6 @@ def clean_data():
         json.dump({'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False)
 
 
-# make_article_list()
-# build_data()
+make_article_list()
+build_data()
 clean_data()
