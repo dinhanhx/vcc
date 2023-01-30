@@ -8,7 +8,7 @@ import urllib3
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
-from vcc.image_caption import ImageCaption
+from vcc.image_text import ImageCaption
 from vcc.ordered_commands import OrderedCommands
 
 
