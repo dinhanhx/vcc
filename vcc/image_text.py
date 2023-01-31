@@ -23,6 +23,11 @@ class ImageDescription:
     image_url: str
     description: List[str]
 
+    def echo(self):
+        print(self.image_url)
+        for description in self.description:
+            print(description)
+
 
 @dataclass
 class PhotoStory(JSONWizard):
@@ -40,9 +45,7 @@ class PhotoStory(JSONWizard):
         print(self.title)
         print(self.article_url)
         for image_description in self.contents:
-            print(image_description.image_url)
-            for description in image_description.description:
-                print(description)
+            image_description.echo()
 
 
 if __name__ == '__main__':
