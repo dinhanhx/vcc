@@ -47,4 +47,4 @@ python vcc/vnexpress_anh_build_data.py make-photo-story-list
 python vcc/vnexpress_anh_build_data.py build-data
 ```
 
-551 photo stories from 555 articles (skipping 4) from 31/1/2023 to 18/11/2022 (videos and animated pictures such as gif or apng are not crawled)
+551 photo stories from 555 articles from 31/1/2023 to 18/11/2022 (videos and animated pictures such as gif or apng are not crawled) (there are 4 articles that don't follow the usual template)
