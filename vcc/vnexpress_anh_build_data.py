@@ -95,7 +95,7 @@ def build_data():
         except AttributeError:
             skip_list.append(url)
 
-    with open(DATA_DIR.joinpath('photo_story.json'), 'w', encoding='utf-8') as fp:
+    with open(DATA_DIR.joinpath('photo_story_list.json'), 'w', encoding='utf-8') as fp:
         json.dump({'photo_story_list': photo_story_list}, fp, indent=4, ensure_ascii=False)
 
     with open(DATA_DIR.joinpath('skip_list.json'), 'w', encoding='utf-8') as fp:
