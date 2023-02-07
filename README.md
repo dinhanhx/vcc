@@ -3,6 +3,10 @@
 - VCC: Vietnamese Conceptual Caption
 - VCC++: VCC but with long description aka photo stories
 
+# Citation 
+
+Check out [CITATION](CITATION.cff) file
+
 # Setup
 
 ```
