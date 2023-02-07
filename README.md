@@ -58,4 +58,9 @@ python vcc/dantri_build_data.py make-article-list
 python vcc/dantri_build_data.py build-data
 ```
 
-... photo stories and ... images with captions from 600 articles from 25/01/2023 to 17/01/2020
+64 (photo_story) + 53 (dmagazine) photo stories and 1431 images with captions from 600 articles from 25/01/2023 to 17/01/2020
+
+⚠ NOTE:
+- there are gifs, apng
+- there are images WITHOUT captions
+- sometimes in a certain article, the author uses 2 images with 1 caption/description hence **we** only take the first one in that pair.
