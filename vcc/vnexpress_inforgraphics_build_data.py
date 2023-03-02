@@ -19,8 +19,7 @@ END_INDEX = 18
 
 @click.group(cls=OrderedCommands)
 def cli():
-    """Welcome to vnexpress inforgraphics crawler, please run commands in the order that you see in this help text
-    """
+    """Welcome to vnexpress inforgraphics crawler, please run commands in the order that you see in this help text"""
     pass
 
 
@@ -28,21 +27,26 @@ def cli():
 def make_article_list():
     article_list = []
     http = urllib3.PoolManager()
-    for i in tqdm(range(START_INDEX, END_INDEX+1)):
-        time.sleep(random.randint(1, 3))  # Slow down so server might think this is a human
+    for i in tqdm(range(START_INDEX, END_INDEX + 1)):
+        time.sleep(
+            random.randint(1, 3)
+        )  # Slow down so server might think this is a human
         inforgraphics_page = f"https://vnexpress.net/infographics-p{i}"
         response = http.request('GET', inforgraphics_page)
         soup = BeautifulSoup(response.data, 'lxml')
         articles_field = soup.find('div', class_="col-left-top")
 
         if i == 1:
-            article = articles_field.find('article', class_="item-news full-thumb article-topstory")
+            article = articles_field.find(
+                'article', class_="item-news full-thumb article-topstory"
+            )
             article_url = article.find('p', class_="description").a['href']
             article_list.append(article_url)
 
         articles = articles_field.find(
             'div',
-            class_="width_common list-news-subfolder list-news-folder-photo has-border-right").find_all('article')
+            class_="width_common list-news-subfolder list-news-folder-photo has-border-right",
+        ).find_all('article')
         for article in articles:
             article_url = article.find('h2', class_="title-news").a['href']
             article_list.append(article_url)
@@ -66,20 +70,30 @@ def build_data():
             continue
         else:
             try:
-                caption = soup.find('div', class_="width-detail-photo").find('p', class_="description").contents[0]
+                caption = (
+                    soup.find('div', class_="width-detail-photo")
+                    .find('p', class_="description")
+                    .contents[0]
+                )
                 image_url = soup.find('picture').img['data-src']
                 ic = ImageCaption(image_url, caption, article)
                 image_caption_list.append(ic.to_dict())
             except AttributeError:
                 continue
 
-    with open(DATA_DIR.joinpath('image_caption_list.json'), 'w', encoding='utf-8') as fp:
-        json.dump({'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False)
+    with open(
+        DATA_DIR.joinpath('image_caption_list.json'), 'w', encoding='utf-8'
+    ) as fp:
+        json.dump(
+            {'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False
+        )
 
 
 @cli.command()
 def clean_data():
-    with open(DATA_DIR.joinpath('image_caption_list.json'), 'r', encoding='utf-8') as fp:
+    with open(
+        DATA_DIR.joinpath('image_caption_list.json'), 'r', encoding='utf-8'
+    ) as fp:
         image_caption_list = json.load(fp)['image_caption_list']
 
     http = urllib3.PoolManager()
@@ -87,11 +101,19 @@ def clean_data():
         if "</span>" in image_caption['caption']:
             response = http.request('GET', image_caption['article_url'])
             soup = BeautifulSoup(response.data, 'lxml')
-            caption = soup.find('div', class_="width-detail-photo").find('p', class_="description").contents[1]
+            caption = (
+                soup.find('div', class_="width-detail-photo")
+                .find('p', class_="description")
+                .contents[1]
+            )
             image_caption['caption'] = caption
 
-    with open(DATA_DIR.joinpath('image_caption_list.json'), 'w', encoding='utf-8') as fp:
-        json.dump({'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False)
+    with open(
+        DATA_DIR.joinpath('image_caption_list.json'), 'w', encoding='utf-8'
+    ) as fp:
+        json.dump(
+            {'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False
+        )
 
 
 if __name__ == '__main__':

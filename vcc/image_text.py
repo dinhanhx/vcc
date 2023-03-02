@@ -49,13 +49,15 @@ class PhotoStory(JSONWizard):
 
 
 if __name__ == '__main__':
-    article = PhotoStory([
-        ImageDescription(image_url='direct image link', description=[
-            'Describe the image',
-            'Describe the image more'
-        ])
-    ],
+    article = PhotoStory(
+        [
+            ImageDescription(
+                image_url='direct image link',
+                description=['Describe the image', 'Describe the image more'],
+            )
+        ],
         article_url='article url',
-        title='A title')
+        title='A title',
+    )
     print(article.to_dict())
     article.echo()

@@ -19,15 +19,14 @@ END_INDEX = 40
 
 @click.group(cls=OrderedCommands)
 def cli():
-    """Welcome to vnanet crawler, please run commands in the order that you see in this help text
-    """
+    """Welcome to vnanet crawler, please run commands in the order that you see in this help text"""
     pass
 
 
 @cli.command()
 def make_article_list():
     article_list = []
-    for i in range(START_INDEX, END_INDEX+1):
+    for i in range(START_INDEX, END_INDEX + 1):
         html_file = HTML_DIR.joinpath(f'{i}.html')
         soup = BeautifulSoup(open(html_file, 'r', encoding='utf-8'), 'lxml')
 
@@ -47,7 +46,9 @@ def build_data():
     image_caption_list = []
     http = urllib3.PoolManager()
     for article_url in tqdm(article_list):
-        time.sleep(random.randint(1, 3))  # Slow down so server might think this is a human
+        time.sleep(
+            random.randint(1, 3)
+        )  # Slow down so server might think this is a human
         response = http.request('GET', article_url)
         soup = BeautifulSoup(response.data, 'lxml')
 
@@ -56,12 +57,16 @@ def build_data():
             ic = ImageCaption(
                 image_url=div_a['href'],
                 caption=div_a['data-caption'],
-                article_url=article_url
+                article_url=article_url,
             )
             image_caption_list.append(ic.to_dict())
 
-    with open(DATA_DIR.joinpath('image_caption_list.json'), 'w', encoding='utf-8') as fp:
-        json.dump({'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False)
+    with open(
+        DATA_DIR.joinpath('image_caption_list.json'), 'w', encoding='utf-8'
+    ) as fp:
+        json.dump(
+            {'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False
+        )
 
 
 if __name__ == '__main__':

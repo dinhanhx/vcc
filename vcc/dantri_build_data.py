@@ -18,8 +18,7 @@ END_INDEX = 30
 
 @click.group(cls=OrderedCommands)
 def cli():
-    """Welcome to dantri crawler, please run commands in the order that you see in this help text
-    """
+    """Welcome to dantri crawler, please run commands in the order that you see in this help text"""
     pass
 
 
@@ -27,7 +26,7 @@ def cli():
 def make_article_list():
     article_list = []
     http = urllib3.PoolManager()
-    for i in tqdm(range(START_INDEX, END_INDEX+1)):
+    for i in tqdm(range(START_INDEX, END_INDEX + 1)):
         dantri_page = f"https://dantri.com.vn/du-lich/video-anh/trang-{i}.htm"
         response = http.request('GET', dantri_page)
         soup = BeautifulSoup(response.data, 'lxml')
@@ -49,7 +48,11 @@ def get_emagazine_category(soup: BeautifulSoup):
     try:
         div_top = soup.find('div', class_="top")
         div_emagazine_category = div_top.find('div', class_="emagazine-category")
-        return div_emagazine_category.find('a')['href'].replace('/', '').replace('.htm', '')
+        return (
+            div_emagazine_category.find('a')['href']
+            .replace('/', '')
+            .replace('.htm', '')
+        )
     except AttributeError:
         return None
 
@@ -85,17 +88,24 @@ def make_photo_story(soup: BeautifulSoup, article_url: str) -> Union[dict, None]
     for tag in div_emagazine_body:
         if tag.name == 'figure' and tag['class'][0] == 'image' and tag.contents:
             # The usual case
-            contents.append(ImageDescription(str(cache_img_url), cache_description.copy()))
+            contents.append(
+                ImageDescription(str(cache_img_url), cache_description.copy())
+            )
             cache_description = []
             cache_img_url = tag.find('img')['data-original']
 
         try:
             if tag.name == 'div' and tag['class'][0] == 'photo-grid':
                 # The case that the author uses 2 images with 1 caption/description
-                contents.append(ImageDescription(str(cache_img_url), cache_description.copy()))
+                contents.append(
+                    ImageDescription(str(cache_img_url), cache_description.copy())
+                )
                 cache_description = []
-                cache_img_url = tag.find('div', class_="photo-row").find('figure',
-                                                                        class_="image").find('img')['data-original']
+                cache_img_url = (
+                    tag.find('div', class_="photo-row")
+                    .find('figure', class_="image")
+                    .find('img')['data-original']
+                )
         except KeyError:
             pass
 
@@ -120,7 +130,7 @@ def build_data():
         'dmagazine': {
             'list': [],
             'path': DATA_DIR.joinpath('dmagazine', 'photo_story_list.json'),
-        }
+        },
     }
 
     image_caption_list = []
@@ -136,7 +146,9 @@ def build_data():
             if photo_story:
                 photo_story_dict[category]['list'].append(photo_story)
 
-    with open(DATA_DIR.joinpath('others', 'image_caption_list.json'), 'w', encoding='utf-8') as fp:
+    with open(
+        DATA_DIR.joinpath('others', 'image_caption_list.json'), 'w', encoding='utf-8'
+    ) as fp:
         json.dump(
             {'image_caption_list': image_caption_list}, fp, indent=4, ensure_ascii=False
         )

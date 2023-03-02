@@ -20,20 +20,26 @@ with codecs.open(str(HTML_DIR.joinpath('1.html')), 'w', encoding='utf-8') as fp:
     time.sleep(random.randint(3, 5))
     fp.write(driver.page_source)
 
-next_page_a_attribute = lambda v: f"//a[@onclick='itemclick(this);' and @data-index='{v}']"  # noqa: E731
+next_page_a_attribute = (
+    lambda v: f"//a[@onclick='itemclick(this);' and @data-index='{v}']"
+)  # noqa: E731
 driver.find_element("xpath", next_page_a_attribute(START_INDEX)).click()
 
 # Get pages in the middle
 for i in range(START_INDEX, END_INDEX):
-    WebDriverWait(driver, timeout=3).until(lambda d: d.find_element("xpath", next_page_a_attribute(i+1)))
+    WebDriverWait(driver, timeout=3).until(
+        lambda d: d.find_element("xpath", next_page_a_attribute(i + 1))
+    )
 
     with codecs.open(str(HTML_DIR.joinpath(f'{i}.html')), 'w', encoding='utf-8') as fp:
         time.sleep(random.randint(3, 5))
         fp.write(driver.page_source)
 
-    driver.find_element("xpath", next_page_a_attribute(i+1)).click()
+    driver.find_element("xpath", next_page_a_attribute(i + 1)).click()
 
 # Get last page
-with codecs.open(str(HTML_DIR.joinpath(f'{END_INDEX}.html')), 'w', encoding='utf-8') as fp:
+with codecs.open(
+    str(HTML_DIR.joinpath(f'{END_INDEX}.html')), 'w', encoding='utf-8'
+) as fp:
     time.sleep(random.randint(3, 5))
     fp.write(driver.page_source)
