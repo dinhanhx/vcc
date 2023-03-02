@@ -2,3 +2,6 @@
 *.html
 *.png
 *.jpg
+data
+.vscode
+.mypy_cache
