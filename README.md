@@ -19,8 +19,13 @@ pip install -e .
 python vcc/setup_webdriver.py
 ```
 
+# Craw data
+In other words, you build data from actual websites
+
 ## VNANET
 [VCC]
+
+[Source](https://vietnam.vnanet.vn/vietnamese/phong-su-anh)
 
 ```
 python vcc/vnanet_download_html.py
@@ -35,6 +40,8 @@ python vcc/vnanet_build_data.py build-data
 ### Inforgraphics
 [VCC]
 
+[Source](https://vnexpress.net/infographics)
+
 ```
 python vcc/vnexpress_inforgraphics_build_data.py make-article-list
 python vcc/vnexpress_inforgraphics_build_data.py build-data
@@ -45,6 +52,8 @@ python vcc/vnexpress_inforgraphics_build_data.py clean-data
 
 ### Anh
 [VCC++]
+
+[Source](https://vnexpress.net/anh)
 
 ```
 python vcc/vnexpress_anh_build_data.py make-photo-story-list
@@ -57,6 +66,8 @@ python vcc/vnexpress_anh_build_data.py build-data
 
 [VCC] [VCC++]
 
+[Source](https://dantri.com.vn/du-lich/video-anh/trang-1.htm)
+
 ```
 python vcc/dantri_build_data.py make-article-list
 python vcc/dantri_build_data.py build-data
@@ -67,4 +78,4 @@ python vcc/dantri_build_data.py build-data
 ⚠ NOTE:
 - there are gifs, apng
 - there are images WITHOUT captions
-- sometimes in a certain article, the author uses 2 images with 1 caption/description hence **we** only take the first one in that pair.
+- sometimes in a certain article, the author uses 2 images with 1 caption/description hence **we** only take the **first one** in that pair.
