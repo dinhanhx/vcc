@@ -5,3 +5,4 @@
 data
 .vscode
 .mypy_cache
+poetry.lock
